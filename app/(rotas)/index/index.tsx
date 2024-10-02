@@ -14,10 +14,12 @@ export default function Home () {
         <Image source={require("@/src/assets/logo.png")} style={styles.logo}/>
 
         <TouchableOpacity>
-          <MaterialIcons name="add" size={32} color={colors.green[300]}/>
+          <MaterialIcons name="add" size={32} color={colors.gray[100]}/>
         </TouchableOpacity>
       </View>
-      <Category/>
+      <Category name="Projeto" icon="code"/>
+      <Category name="Site" icon="language"/>
+      <Category name="Video" icon="movie"/>
     </View>
   )
 }
