@@ -5,7 +5,8 @@ import { MaterialIcons } from "@expo/vector-icons"
 import { styles } from "./styles"
 import { colors } from "@/src/styles/colors"
 
-import { Category } from "@/src/components/category"
+import { Link } from "@/src/components/link"
+import { Categories } from "@/src/components/categories"
 
 export default function Home () {
   return (
@@ -17,9 +18,8 @@ export default function Home () {
           <MaterialIcons name="add" size={32} color={colors.gray[100]}/>
         </TouchableOpacity>
       </View>
-      <Category name="Projeto" icon="code" isSelected/>
-      <Category name="Site" icon="language" isSelected={false}/>
-      <Category name="Video" icon="movie" isSelected={false}/>
+      <Categories/>
+      
     </View>
   )
 }
