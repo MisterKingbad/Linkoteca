@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
 import { styles } from "./styles";
@@ -11,6 +11,15 @@ import { Input } from "@/src/components/input";
 import { Button } from "@/src/components/button";
 
 export default function Add() {
+  const [form, setForm] = useState({
+    name: "",
+    url: ""
+  })
+  const [category, setCategory] = useState("")
+
+  const handleAdd = () => {
+    console.log(form)
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -22,12 +31,12 @@ export default function Add() {
       </View>
 
       <Text style={styles.label}>Selecione uma categoria</Text>
-      <Categories/>
+      <Categories onChange={setCategory} selected={category}/>
 
       <View style={styles.form}>
-        <Input placeholder="Nome"/>
-        <Input placeholder="Url"/>
-        <Button title="Adicionar"/>
+        <Input placeholder="Nome" onChangeText={(v) => setForm({...form, name: v})}/>
+        <Input placeholder="Url" onChangeText={(v) => setForm({...form, url: v})}/>
+        <Button title="Adicionar" onPress={handleAdd}/>
       </View>
     </View>
   );

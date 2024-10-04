@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   View,
@@ -16,8 +16,10 @@ import { colors } from "@/src/styles/colors";
 import { Link } from "@/src/components/link";
 import { Categories } from "@/src/components/categories";
 import { Option } from "@/src/components/option";
+import { categories } from "@/src/utils/categories";
 
 export default function Home() {
+  const [category, setCategory] = useState(categories[0].name)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -27,7 +29,7 @@ export default function Home() {
           <MaterialIcons name="add" size={32} color={colors.gray[100]} />
         </TouchableOpacity>
       </View>
-      <Categories />
+      <Categories onChange={setCategory} selected={category}/>
 
       <FlatList
         data={["1", "2", "3", "4", "5", "6"]}
