@@ -5,6 +5,7 @@ import { styles } from "./styles";
 import { colors } from "@/src/styles/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { linkStorage } from "@/src/storage/link-storage";
 
 import { Categories } from "@/src/components/categories";
 import { Input } from "@/src/components/input";
@@ -13,23 +14,31 @@ import { Button } from "@/src/components/button";
 export default function Add() {
   const [form, setForm] = useState({
     name: "",
-    url: ""
+    url: "",
+    category: ""
   })
-  const [category, setCategory] = useState("")
 
-  const handleAdd = () => {
-    if (!category) {
-      return Alert.alert("Categoria", "Selecione a categoria")
-    }
+  const handleAdd = async () => {
+    try {
+      if (!form.category) {
+        return Alert.alert("Categoria", "Selecione a categoria")
+      }
+  
+      if (!form.name.trim()) {
+        return Alert.alert("Nome", "Informe o nome")
+      }
+  
+      if (!form.url.trim()) {
+        return Alert.alert("URL", "Informe a url")
+      }
 
-    if (!form.name.trim()) {
-      return Alert.alert("Nome", "Informe o nome")
-    }
+      await linkStorage.save({ ...form, id: new Date().getTime().toString() })
+      // const data = await linkStorage.save(form)
 
-    if (!form.url.trim()) {
-      return Alert.alert("URL", "Informe a url")
+      console.log(form)
+    } catch (err) {
+      Alert.alert("Erro", `Não foi possível salvar o link: ${err}`)
     }
-    console.log(form)
   }
   return (
     <View style={styles.container}>
@@ -42,7 +51,7 @@ export default function Add() {
       </View>
 
       <Text style={styles.label}>Selecione uma categoria</Text>
-      <Categories onChange={setCategory} selected={category}/>
+      <Categories onChange={(v) => setForm({...form, category: v})} selected={form.category}/>
 
       <View style={styles.form}>
         <Input placeholder="Nome" onChangeText={(v) => setForm({...form, name: v})}/>
