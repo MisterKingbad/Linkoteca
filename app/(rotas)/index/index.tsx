@@ -14,6 +14,7 @@ import { colors } from "@/src/styles/colors";
 
 import { Link } from "@/src/components/link";
 import { Categories } from "@/src/components/categories";
+import { Option } from "@/src/components/option";
 
 export default function Home() {
   return (
@@ -38,7 +39,7 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
       />
 
-      <Modal visible={false} transparent>
+      <Modal  transparent>
         <View style={styles.modal}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
@@ -47,9 +48,14 @@ export default function Home() {
                 <MaterialIcons name="close" size={20} color={colors.gray[400]} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.modalLinkName}>MK</Text>
 
+            <Text style={styles.modalLinkName}>MK</Text>
             <Text style={styles.modalUrl}>MK</Text>
+
+            <View style={styles.modalFooter}>
+              <Option name="Excluir" icon="delete" variant="secondary"/>
+              <Option name="Abrir" icon="language"/>
+            </View>
           </View>
         </View>
       </Modal>
