@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 
 import { styles } from "./styles";
 import { colors } from "@/src/styles/colors";
@@ -18,6 +18,17 @@ export default function Add() {
   const [category, setCategory] = useState("")
 
   const handleAdd = () => {
+    if (!category) {
+      return Alert.alert("Categoria", "Selecione a categoria")
+    }
+
+    if (!form.name.trim()) {
+      return Alert.alert("Nome", "Informe o nome")
+    }
+
+    if (!form.url.trim()) {
+      return Alert.alert("URL", "Informe a url")
+    }
     console.log(form)
   }
   return (
@@ -35,7 +46,7 @@ export default function Add() {
 
       <View style={styles.form}>
         <Input placeholder="Nome" onChangeText={(v) => setForm({...form, name: v})}/>
-        <Input placeholder="Url" onChangeText={(v) => setForm({...form, url: v})}/>
+        <Input placeholder="URL" onChangeText={(v) => setForm({...form, url: v})}/>
         <Button title="Adicionar" onPress={handleAdd}/>
       </View>
     </View>
