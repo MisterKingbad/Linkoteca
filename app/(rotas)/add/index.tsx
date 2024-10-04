@@ -7,6 +7,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
 import { Categories } from "@/src/components/categories";
+import { Input } from "@/src/components/input";
+import { Button } from "@/src/components/button";
 
 export default function Add() {
   return (
@@ -21,6 +23,12 @@ export default function Add() {
 
       <Text style={styles.label}>Selecione uma categoria</Text>
       <Categories/>
+
+      <View style={styles.form}>
+        <Input placeholder="Nome"/>
+        <Input placeholder="Url"/>
+        <Button title="Adicionar"/>
+      </View>
     </View>
   );
 }
