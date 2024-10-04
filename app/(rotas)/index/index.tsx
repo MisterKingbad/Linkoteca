@@ -1,5 +1,5 @@
 import React from "react"
-import { Image, View, TouchableOpacity } from "react-native"
+import { Image, View, TouchableOpacity, FlatList } from "react-native"
 import { MaterialIcons } from "@expo/vector-icons"
 
 import { styles } from "./styles"
@@ -19,6 +19,17 @@ export default function Home () {
         </TouchableOpacity>
       </View>
       <Categories/>
+
+      <FlatList
+        data={["1", "2", "3", "4", "5", "6"]}
+        keyExtractor={item => item}
+        renderItem={() => (
+            <Link name="e" url="" onDetails={() => console.log("click")}/>
+        )}
+        style={styles.links}
+        contentContainerStyle={styles.linksContent}
+        showsVerticalScrollIndicator={false}
+      />
       
     </View>
   )
