@@ -23,14 +23,14 @@ import { categories } from "@/src/utils/categories";
 export default function Home() {
   const [category, setCategory] = useState(categories[0].name);
   const [links, setLinks] = useState<LinkStorage[]>([]);
-  const [showModal, setShowModal] = useState(false)
-  const [link, setLink] = useState<LinkStorage>({} as LinkStorage)
+  const [showModal, setShowModal] = useState(false);
+  const [link, setLink] = useState<LinkStorage>({} as LinkStorage);
 
   const getLinks = async () => {
     try {
       const res = await linkStorage.get();
 
-      const filtered = res.filter((link) => link.category === category)
+      const filtered = res.filter((link) => link.category === category);
       setLinks(filtered);
     } catch (err) {
       Alert.alert("erro", `Não foi possível listar os links. ${err}`);
@@ -38,9 +38,26 @@ export default function Home() {
   };
 
   const handleDetails = (selected: LinkStorage) => {
-    setShowModal(true)
-    setLink(selected)
-  }
+    setShowModal(true);
+    setLink(selected);
+  };
+
+  const linkRemove = async () => {
+    try {
+      await linkStorage.remove(link.id);
+      getLinks();
+      setShowModal(false);
+    } catch (err) {
+      Alert.alert("erro", `Não foi possível excluir o link. ${err}`);
+    }
+  };
+
+  const handleRemove = () => {
+    Alert.alert("Excluir", "Deseja realmente excluir?", [
+      { style: "cancel", text: "Não" },
+      { text: "Sim", onPress: linkRemove },
+    ]);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -92,7 +109,7 @@ export default function Home() {
             <Text style={styles.modalUrl}>{link.url}</Text>
 
             <View style={styles.modalFooter}>
-              <Option name="Excluir" icon="delete" variant="secondary" />
+              <Option name="Excluir" icon="delete" variant="secondary" onPress={handleRemove}/>
               <Option name="Abrir" icon="language" />
             </View>
           </View>
