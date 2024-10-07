@@ -23,6 +23,8 @@ import { categories } from "@/src/utils/categories";
 export default function Home() {
   const [category, setCategory] = useState(categories[0].name);
   const [links, setLinks] = useState<LinkStorage[]>([]);
+  const [showModal, setShowModal] = useState(false)
+  const [link, setLink] = useState<LinkStorage>({} as LinkStorage)
 
   const getLinks = async () => {
     try {
@@ -34,6 +36,11 @@ export default function Home() {
       Alert.alert("erro", `Não foi possível listar os links. ${err}`);
     }
   };
+
+  const handleDetails = (selected: LinkStorage) => {
+    setShowModal(true)
+    setLink(selected)
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -59,7 +66,7 @@ export default function Home() {
           <Link
             name={item.name}
             url={item.url}
-            onDetails={() => console.log("click")}
+            onDetails={() => handleDetails(item)}
           />
         )}
         style={styles.links}
@@ -67,12 +74,12 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
       />
 
-      <Modal visible={false} transparent>
+      <Modal visible={showModal} transparent animationType="slide">
         <View style={styles.modal}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalCategory}>Curso</Text>
-              <TouchableOpacity>
+              <Text style={styles.modalCategory}>{link.category}</Text>
+              <TouchableOpacity onPress={() => setShowModal(false)}>
                 <MaterialIcons
                   name="close"
                   size={20}
@@ -81,8 +88,8 @@ export default function Home() {
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.modalLinkName}>MK</Text>
-            <Text style={styles.modalUrl}>MK</Text>
+            <Text style={styles.modalLinkName}>{link.name}</Text>
+            <Text style={styles.modalUrl}>{link.url}</Text>
 
             <View style={styles.modalFooter}>
               <Option name="Excluir" icon="delete" variant="secondary" />
