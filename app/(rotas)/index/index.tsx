@@ -7,6 +7,7 @@ import {
   Modal,
   Text,
   Alert,
+  Linking,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
@@ -33,7 +34,7 @@ export default function Home() {
       const filtered = res.filter((link) => link.category === category);
       setLinks(filtered);
     } catch (err) {
-      Alert.alert("erro", `Não foi possível listar os links. ${err}`);
+      Alert.alert("Erro", `Não foi possível listar os links. ${err}`);
     }
   };
 
@@ -48,7 +49,7 @@ export default function Home() {
       getLinks();
       setShowModal(false);
     } catch (err) {
-      Alert.alert("erro", `Não foi possível excluir o link. ${err}`);
+      Alert.alert("Erro", `Não foi possível excluir o link. ${err}`);
     }
   };
 
@@ -58,6 +59,15 @@ export default function Home() {
       { text: "Sim", onPress: linkRemove },
     ]);
   };
+
+  const handleOpen = async () => {
+    try {
+      await Linking.openURL(link.url)
+      setShowModal(false)
+    } catch (err) {
+      Alert.alert("Erro", `Não foi possível abrir o link. ${err}`)
+    }
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -110,7 +120,7 @@ export default function Home() {
 
             <View style={styles.modalFooter}>
               <Option name="Excluir" icon="delete" variant="secondary" onPress={handleRemove}/>
-              <Option name="Abrir" icon="language" />
+              <Option name="Abrir" icon="language" onPress={handleOpen}/>
             </View>
           </View>
         </View>
