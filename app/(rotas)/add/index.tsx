@@ -15,46 +15,57 @@ export default function Add() {
   const [form, setForm] = useState({
     name: "",
     url: "",
-    category: ""
-  })
+    category: "",
+  });
 
   const handleAdd = async () => {
     try {
       if (!form.category) {
-        return Alert.alert("Categoria", "Selecione a categoria")
-      }
-  
-      if (!form.name.trim()) {
-        return Alert.alert("Nome", "Informe o nome")
-      }
-  
-      if (!form.url.trim()) {
-        return Alert.alert("URL", "Informe a url")
+        return Alert.alert("Categoria", "Selecione a categoria");
       }
 
-      await linkStorage.save({ ...form, id: new Date().getTime().toString() })
-      Alert.alert("Sucesso", "Link adicionado com sucesso!")
+      if (!form.name.trim()) {
+        return Alert.alert("Nome", "Informe o nome");
+      }
+
+      if (!form.url.trim()) {
+        return Alert.alert("URL", "Informe a url");
+      }
+
+      await linkStorage.save({ ...form, id: new Date().getTime().toString() });
+      Alert.alert("Sucesso", "Novo link adicionado com sucesso!", [
+        { text: "Ok", onPress: () => router.back() },
+      ]);
     } catch (err) {
-      Alert.alert("Erro", `Não foi possível salvar o link: ${err}`)
+      Alert.alert("Erro", `Não foi possível salvar o link: ${err}`);
     }
-  }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-            <MaterialIcons name="arrow-back" size={32} color={colors.gray[200]}/>
+          <MaterialIcons name="arrow-back" size={32} color={colors.gray[200]} />
         </TouchableOpacity>
 
         <Text style={styles.title}>Novo</Text>
       </View>
 
       <Text style={styles.label}>Selecione uma categoria</Text>
-      <Categories onChange={(v) => setForm({...form, category: v})} selected={form.category}/>
+      <Categories
+        onChange={(v) => setForm({ ...form, category: v })}
+        selected={form.category}
+      />
 
       <View style={styles.form}>
-        <Input placeholder="Nome" onChangeText={(v) => setForm({...form, name: v})}/>
-        <Input placeholder="URL" onChangeText={(v) => setForm({...form, url: v})}/>
-        <Button title="Adicionar" onPress={handleAdd}/>
+        <Input
+          placeholder="Nome"
+          onChangeText={(v) => setForm({ ...form, name: v })}
+        />
+        <Input
+          placeholder="URL"
+          onChangeText={(v) => setForm({ ...form, url: v })}
+        />
+        <Button title="Adicionar" onPress={handleAdd} />
       </View>
     </View>
   );

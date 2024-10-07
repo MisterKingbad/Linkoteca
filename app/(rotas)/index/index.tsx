@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Image,
   View,
@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
 import { styles } from "./styles";
 import { colors } from "@/src/styles/colors";
@@ -21,21 +21,23 @@ import { Option } from "@/src/components/option";
 import { categories } from "@/src/utils/categories";
 
 export default function Home() {
-  const [category, setCategory] = useState(categories[0].name)
-  const [links, setLinks] = useState<LinkStorage[]>([])
+  const [category, setCategory] = useState(categories[0].name);
+  const [links, setLinks] = useState<LinkStorage[]>([]);
 
   const getLinks = async () => {
     try {
-      const res = await linkStorage.get()
-      setLinks(res)
+      const res = await linkStorage.get();
+      setLinks(res);
     } catch (err) {
-      Alert.alert("erro", `Não foi possível listar os links. ${err}`)
+      Alert.alert("erro", `Não foi possível listar os links. ${err}`);
     }
-  }
+  };
 
-  useEffect(() => {
-    getLinks()
-  }, [category])
+  useFocusEffect(
+    useCallback(() => {
+      getLinks();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -46,13 +48,17 @@ export default function Home() {
           <MaterialIcons name="add" size={32} color={colors.gray[100]} />
         </TouchableOpacity>
       </View>
-      <Categories onChange={setCategory} selected={category}/>
+      <Categories onChange={setCategory} selected={category} />
 
       <FlatList
         data={links}
         keyExtractor={(item) => item.id}
-        renderItem={({item}) => (
-          <Link name={item.name} url={item.url} onDetails={() => console.log("click")} />
+        renderItem={({ item }) => (
+          <Link
+            name={item.name}
+            url={item.url}
+            onDetails={() => console.log("click")}
+          />
         )}
         style={styles.links}
         contentContainerStyle={styles.linksContent}
@@ -65,7 +71,11 @@ export default function Home() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalCategory}>Curso</Text>
               <TouchableOpacity>
-                <MaterialIcons name="close" size={20} color={colors.gray[400]} />
+                <MaterialIcons
+                  name="close"
+                  size={20}
+                  color={colors.gray[400]}
+                />
               </TouchableOpacity>
             </View>
 
@@ -73,8 +83,8 @@ export default function Home() {
             <Text style={styles.modalUrl}>MK</Text>
 
             <View style={styles.modalFooter}>
-              <Option name="Excluir" icon="delete" variant="secondary"/>
-              <Option name="Abrir" icon="language"/>
+              <Option name="Excluir" icon="delete" variant="secondary" />
+              <Option name="Abrir" icon="language" />
             </View>
           </View>
         </View>
