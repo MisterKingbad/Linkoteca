@@ -33,9 +33,7 @@ export default function Add() {
       }
 
       await linkStorage.save({ ...form, id: new Date().getTime().toString() })
-      // const data = await linkStorage.save(form)
-
-      console.log(form)
+      Alert.alert("Sucesso", "Link adicionado com sucesso!")
     } catch (err) {
       Alert.alert("Erro", `Não foi possível salvar o link: ${err}`)
     }
